@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tes Analogi Psikologi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3e5f5;
+            margin: 0;
+            padding: 20px;
+            color: #4a148c;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(149, 117, 205, 0.2);
+        }
+        
+        h1 {
+            color: #6a1b9a;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .user-info {
+            background-color: #f0e5ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .question-container {
+            margin-bottom: 30px;
+        }
+        
+        .question {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .option {
+            padding: 12px 15px;
+            background-color: #f8f1ff;
+            border: 2px solid #e1bee7;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            background-color: #e1bee7;
+        }
+        
+        .option.selected {
+            background-color: #9c27b0;
+            color: white;
+            border-color: #9c27b0;
+        }
+        
+        .btn-submit {
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto 0;
+            transition: all 0.3s;
+        }
+        
+        .btn-submit:hover {
+            background-color: #7b1fa2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(156, 39, 176, 0.3);
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e1bee7;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #9c27b0;
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .question-number {
+            text-align: right;
+            color: #9c27b0;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tes Analogi Psikologi</h1>
+        
+        <div class="user-info" id="userInfo">
+            <div>
+                <span id="userName"></span> | 
+                <span id="userAge"></span> tahun | 
+                <span id="userGender"></span>
+            </div>
+            <div id="timer">00:00</div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="question-number">
+            Soal <span id="currentQuestion">1</span>/20
+        </div>
+        
+        <div class="question-container" id="questionContainer">
+            <!-- Pertanyaan akan dimuat di sini oleh JavaScript -->
+        </div>
+        
+        <button class="btn-submit" id="submitBtn" disabled>Submit Jawaban</button>
+    </div>
+
+    <script>
+        // Data soal tes
+        const questions = [
+            {
+                question: "Tumpul : Pisau = Pecah : ?",
+                options: ["Kaca", "Retak", "Lem", "Pot", "Keras"],
+                answer: "A"
+            },
+            {
+                question: "Lapar : Makan = Haus : ?",
+                options: ["Air", "Minuman", "Minum", "Dahaga", "Segar"],
+                answer: "C"
+            },
+            {
+                question: "Pensil : Menulis = Penggaris : ?",
+                options: ["Menggambar", "Melukis", "Menggaris", "Kertas", "Ukuran"],
+                answer: "E"
+            },
+            {
+                question: "Pedas : Cabai = Manis : ?",
+                options: ["Gula", "Madu", "Rasa", "Cokelat", "Garam"],
+                answer: "A"
+            },
+            {
+                question: "Dokter : Rumah Sakit = Guru : ?",
+                options: ["Pelajar", "Sekolah", "Kelas", "Buku", "Pendidikan"],
+                answer: "B"
+            },
+            {
+                question: "Kunci : Pintu = Remote : ?",
+                options: ["Tv", "Tombol", "Suara", "Baterai", "Layar"],
+                answer: "A"
+            },
+            {
+                question: "Petani : Cangkul = Penulis : ?",
+                options: ["Komputer", "Kertas", "Pena", "Tinta", "Buku"],
+                answer: "C"
+            },
+            {
+                question: "Gigi : Mulut = Jari : ?",
+                options: ["Kuku", "Tangan", "Telapak", "Sarung Tangan", "Lengan"],
+                answer: "B"
+            },
+            {
+                question: "Ikan : Air = Burung : ?",
+                options: ["Udara", "Langit", "Terbang", "Angin", "Pohon"],
+                answer: "A"
+            },
+            {
+                question: "Jantung : Darah = Paru-Paru : ?",
+                options: ["Oksigen", "Udara", "Napas", "Hidung", "Dada"],
+                answer: "A"
+            },
+            {
+                question: "Membangun : Merobohkan = Mencintai : ?",
+                options: ["Menghargai", "Membenci", "Merawat", "Mengenang", "Menyayangi"],
+                answer: "B"
+            },
+            {
+                question: "Aroma : Parfum = Suara : ?",
+                options: ["Gelombang", "Musik", "Alat", "Lagu", "Mikrofon"],
+                answer: "B"
+            },
+            {
+                question: "Kereta Gantung : Kabel = Lift : ?",
+                options: ["Tangga", "Poros", "Rel Vertikal", "Tiang", "Lorong"],
+                answer: "B"
+            },
+            {
+                question: "Kapas : Sutra = Baju : ?",
+                options: ["Celana", "Jas", "Kain", "Linen", "Wol"],
+                answer: "B"
+            },
+            {
+                question: "Persegi Panjang : Balok = Lingkaran : ?",
+                options: ["Tabung", "Bola", "Kerucut", "Balok", "Kubus"],
+                answer: "B"
+            },
+            {
+                question: "Sakelar : Lampu = Tuas : ?",
+                options: ["Listrik", "Mesin", "Gigi", "Tangga", "Dinding"],
+                answer: "B"
+            },
+            {
+                question: "Mata : Cahaya = Hidung : ?",
+                options: ["Bau", "Aroma", "Wangi", "Udara", "Bau Busuk"],
+                answer: "A"
+            },
+            {
+                question: "Data : Jaringan = Darah : ?",
+                options: ["Jantung", "Pembuluh", "Organ", "Plasma", "Nadi"],
+                answer: "B"
+            },
+            {
+                question: "Paru-Paru : Oksigen = Lambung : ?",
+                options: ["Energi", "Nutrisi", "Makanan", "Pencernaan", "Lemak"],
+                answer: "C"
+            },
+            {
+                question: "Koki : Dapur = Montir : ?",
+                options: ["Mobil", "Bengkel", "Mesin", "Oli", "Alat"],
+                answer: "B"
+            }
+        ];
+
+        // Variabel state
+        let currentQuestion = 0;
+        let userAnswers = Array(questions.length).fill(null);
+        let startTime = new Date();
+        let timerInterval;
+
+        // Load data user dari localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                document.getElementById('userName').textContent = userData.name;
+                document.getElementById('userAge').textContent = userData.age;
+                document.getElementById('userGender').textContent = userData.gender === 'male' ? 'Laki-laki' : 'Perempuan';
+            }
+            
+            startTimer();
+            loadQuestion();
+        });
+
+        // Fungsi timer
+        function startTimer() {
+            startTime = new Date();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            const now = new Date();
+            const elapsed = new Date(now - startTime);
+            const minutes = elapsed.getUTCMinutes().toString().padStart(2, '0');
+            const seconds = elapsed.getUTCSeconds().toString().padStart(2, '0');
+            document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+        }
+
+        // Fungsi untuk memuat pertanyaan
+        function loadQuestion() {
+            const questionContainer = document.getElementById('questionContainer');
+            const currentQ = questions[currentQuestion];
+            
+            // Update progress bar
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('currentQuestion').textContent = currentQuestion + 1;
+            
+            // Buat HTML untuk pertanyaan
+            let optionsHtml = '';
+            currentQ.options.forEach((option, index) => {
+                const optionLetter = String.fromCharCode(65 + index); // A, B, C, ...
+                const isSelected = userAnswers[currentQuestion] === optionLetter;
+                optionsHtml += `
+                    <div class="option ${isSelected ? 'selected' : ''}" 
+                         data-option="${optionLetter}" 
+                         onclick="selectOption('${optionLetter}')">
+                        ${optionLetter}) ${option}
+                    </div>
+                `;
+            });
+            
+            questionContainer.innerHTML = `
+                <div class="question">${currentQ.question}</div>
+                <div class="options">${optionsHtml}</div>
+            `;
+            
+            // Update tombol submit
+            document.getElementById('submitBtn').disabled = userAnswers[currentQuestion] === null;
+        }
+
+        // Fungsi untuk memilih jawaban
+        window.selectOption = function(option) {
+            userAnswers[currentQuestion] = option;
+            
+            // Update tampilan option yang dipilih
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+                if (opt.dataset.option === option) {
+                    opt.classList.add('selected');
+                }
+            });
+            
+            document.getElementById('submitBtn').disabled = false;
+        };
+
+        // Fungsi untuk submit jawaban dan lanjut ke pertanyaan berikutnya
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+                document.getElementById('submitBtn').disabled = userAnswers[currentQuestion] === null;
+            } else {
+                // Selesai mengerjakan semua soal
+                finishTest();
+            }
+        });
+
+        // Fungsi ketika tes selesai
+        function finishTest() {
+            clearInterval(timerInterval);
+            
+            // Hitung skor
+            let score = 0;
+            questions.forEach((q, index) => {
+                if (userAnswers[index] === q.answer) {
+                    score++;
+                }
+            });
+            
+            // Simpan hasil tes
+            const testResult = {
+                score: score,
+                totalQuestions: questions.length,
+                percentage: Math.round((score / questions.length) * 100),
+                timeSpent: document.getElementById('timer').textContent,
+                completedAt: new Date().toLocaleString()
+            };
+            
+            localStorage.setItem('testResult', JSON.stringify(testResult));
+            
+            // Redirect ke halaman hasil
+            window.location.href = 'hasil.html';
+        }
+    </script>
+</body>
+</html>

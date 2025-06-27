@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Tes Psikologi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3e5f5;
+            margin: 0;
+            padding: 20px;
+            color: #4a148c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 600px;
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(149, 117, 205, 0.2);
+            text-align: center;
+        }
+        
+        h1 {
+            color: #6a1b9a;
+            margin-bottom: 20px;
+        }
+        
+        .user-info {
+            background-color: #f0e5ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .result-container {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f8f1ff;
+            border-radius: 15px;
+        }
+        
+        .score {
+            font-size: 3rem;
+            font-weight: 600;
+            color: #9c27b0;
+            margin: 10px 0;
+        }
+        
+        .score-text {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .detail {
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .btn-finish {
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        
+        .btn-finish:hover {
+            background-color: #7b1fa2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(156, 39, 176, 0.3);
+        }
+        
+        .progress-ring {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+        }
+        
+        .progress-ring__circle {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        .progress-ring__circle-bg {
+            stroke: #e1bee7;
+            stroke-width: 8;
+            fill: none;
+        }
+        
+        .progress-ring__circle-progress {
+            stroke: #9c27b0;
+            stroke-width: 8;
+            stroke-linecap: round;
+            fill: none;
+            transition: stroke-dashoffset 0.5s;
+        }
+        
+        .progress-ring__text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: 600;
+            color: #6a1b9a;
+        }
+        
+        .thank-you-message {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0e5ff;
+            border-radius: 10px;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .thank-you-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #9c27b0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hasil Tes Analogi Psikologi</h1>
+        
+        <div class="user-info">
+            <div id="userName"></div>
+            <div id="testDate"></div>
+        </div>
+        
+        <div class="result-container">
+            <div class="progress-ring">
+                <svg width="150" height="150" viewBox="0 0 150 150">
+                    <circle class="progress-ring__circle-bg" cx="75" cy="75" r="65"></circle>
+                    <circle class="progress-ring__circle-progress" cx="75" cy="75" r="65" id="progressCircle"></circle>
+                </svg>
+                <div class="progress-ring__text" id="percentage">0%</div>
+            </div>
+            
+            <div class="score" id="score"></div>
+            <div class="score-text" id="scoreText"></div>
+            
+            <div class="detail">
+                <span>Total Soal:</span>
+                <span id="totalQuestions"></span>
+            </div>
+            <div class="detail">
+                <span>Jawaban Benar:</span>
+                <span id="correctAnswers"></span>
+            </div>
+            <div class="detail">
+                <span>Waktu Pengerjaan:</span>
+                <span id="timeSpent"></span>
+            </div>
+        </div>
+        
+        <button class="btn-finish" id="finishBtn">Selesai</button>
+        
+        <div class="thank-you-message" id="thankYouMessage">
+            <div class="thank-you-icon">✓</div>
+            <h3>Terima kasih telah mengerjakan tes psikologi ini.</h3>
+            <p>Data Anda kami simpan dengan baik dan aman.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load data user
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                document.getElementById('userName').textContent = 
+                    `${userData.name} | ${userData.age} tahun | ${userData.gender === 'male' ? 'Laki-laki' : 'Perempuan'}`;
+            }
+            
+            // Load hasil tes
+            const testResult = JSON.parse(localStorage.getItem('testResult'));
+            if (testResult) {
+                document.getElementById('score').textContent = `${testResult.score}/${testResult.totalQuestions}`;
+                document.getElementById('percentage').textContent = `${testResult.percentage}%`;
+                document.getElementById('totalQuestions').textContent = testResult.totalQuestions;
+                document.getElementById('correctAnswers').textContent = testResult.score;
+                document.getElementById('timeSpent').textContent = testResult.timeSpent;
+                document.getElementById('testDate').textContent = `Diselesaikan pada: ${testResult.completedAt}`;
+                
+                // Update progress circle
+                const circle = document.getElementById('progressCircle');
+                const radius = 65;
+                const circumference = 2 * Math.PI * radius;
+                const offset = circumference - (testResult.percentage / 100) * circumference;
+                circle.style.strokeDasharray = `${circumference} ${circumference}`;
+                circle.style.strokeDashoffset = offset;
+                
+                // Berikan feedback berdasarkan skor
+                const scoreText = document.getElementById('scoreText');
+                if (testResult.percentage >= 80) {
+                    scoreText.textContent = "Hasil sangat baik! Kemampuan analogi Anda luar biasa.";
+                } else if (testResult.percentage >= 60) {
+                    scoreText.textContent = "Hasil baik! Kemampuan analogi Anda di atas rata-rata.";
+                } else if (testResult.percentage >= 40) {
+                    scoreText.textContent = "Hasil cukup. Kemampuan analogi Anda sedang.";
+                } else {
+                    scoreText.textContent = "Perlu latihan lebih untuk meningkatkan kemampuan analogi Anda.";
+                }
+            }
+            
+            // Handle tombol selesai
+            document.getElementById('finishBtn').addEventListener('click', function() {
+                this.style.display = 'none';
+                document.getElementById('thankYouMessage').style.display = 'block';
+                
+                // Set timeout untuk kembali ke halaman awal setelah 5 detik
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>

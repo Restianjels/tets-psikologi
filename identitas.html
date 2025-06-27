@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identitas Peserta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #faf4ff; /* Ungu pastel sangat muda */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #5a4a6a;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(206, 182, 255, 0.3); /* Bayangan ungu */
+            padding: 40px;
+            width: 80%;
+            max-width: 500px;
+            animation: fadeIn 1s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #9c7bff; /* Ungu pastel */
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1:before {
+            content: "✧";
+            position: absolute;
+            left: -10px;
+            top: -15px;
+            font-size: 1.5rem;
+            color: #d4b8ff;
+        }
+        
+        h1:after {
+            content: "✧";
+            position: absolute;
+            right: -10px;
+            bottom: -15px;
+            font-size: 1.5rem;
+            color: #d4b8ff;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            animation: slideUp 0.5s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #9c7bff; /* Ungu pastel */
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9d8ff; /* Ungu sangat muda */
+            border-radius: 15px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #fdfaff;
+        }
+        
+        input:focus, select:focus {
+            border-color: #b399ff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(179, 153, 255, 0.2);
+        }
+        
+        .gender-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .gender-option {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .gender-option input {
+            display: none;
+        }
+        
+        .gender-option label {
+            display: block;
+            padding: 12px;
+            border-radius: 15px;
+            background-color: #fdfaff;
+            border: 2px solid #e9d8ff;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 400;
+        }
+        
+        .gender-option input:checked + label {
+            background-color: #b399ff;
+            color: white;
+            border-color: #b399ff;
+        }
+        
+        .btn-start {
+            background: linear-gradient(135deg, #b399ff, #d4b8ff);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(179, 153, 255, 0.4);
+            animation: pulse 2s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-start:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(179, 153, 255, 0.6);
+        }
+        
+        .btn-start:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-start:after {
+            content: "❀";
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .decoration {
+            position: fixed;
+            z-index: 0;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        .star {
+            color: #d4b8ff;
+            font-size: 24px;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .cloud {
+            width: 100px;
+            height: 60px;
+            background: #e9d8ff;
+            border-radius: 50px;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .cloud:before, .cloud:after {
+            content: '';
+            position: absolute;
+            background: #e9d8ff;
+            border-radius: 50%;
+        }
+        
+        .cloud:before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 15px;
+        }
+        
+        .cloud:after {
+            width: 30px;
+            height: 30px;
+            top: -15px;
+            right: 20px;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        
+        .cute-character {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-color: #e9d8ff;
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        .character-1 {
+            top: -20px;
+            right: -20px;
+            width: 100px;
+            height: 100px;
+            opacity: 0.3;
+        }
+        
+        .character-2 {
+            bottom: -30px;
+            left: -30px;
+            width: 120px;
+            height: 120px;
+            opacity: 0.2;
+        }
+        
+        .character-1:before, .character-2:before {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #fdfaff;
+            border-radius: 50%;
+            top: 20px;
+            left: 20px;
+        }
+        
+        .character-1:after, .character-2:after {
+            content: "◡";
+            position: absolute;
+            font-size: 20px;
+            bottom: 25px;
+            left: 40px;
+            color: #b399ff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Dekorasi mengambang -->
+    <div class="decoration star" style="top: 10%; left: 10%;">✦</div>
+    <div class="decoration star" style="bottom: 15%; right: 15%;">✧</div>
+    <div class="decoration cloud" style="top: 20%; right: 10%;"></div>
+    <div class="decoration cloud" style="bottom: 10%; left: 15%; transform: scale(0.8);"></div>
+    
+    <!-- Karakter lucu -->
+    <div class="cute-character character-1"></div>
+    <div class="cute-character character-2"></div>
+    
+    <div class="container">
+        <h1>Isi Identitas Kamu</h1>
+        
+        <form id="identityForm">
+            <div class="form-group" style="animation-delay: 0.1s;">
+                <label for="name">Nama Lengkap</label>
+                <input type="text" id="name" placeholder="Masukkan nama kamu" required>
+            </div>
+            
+            <div class="form-group" style="animation-delay: 0.2s;">
+                <label for="age">Usia</label>
+                <input type="number" id="age" placeholder="Masukkan usia kamu" min="12" max="100" required>
+            </div>
+            
+            <div class="form-group" style="animation-delay: 0.3s;">
+                <label>Jenis Kelamin</label>
+                <div class="gender-options">
+                    <div class="gender-option">
+                        <input type="radio" id="male" name="gender" value="male" required>
+                        <label for="male">Laki-laki</label>
+                    </div>
+                    <div class="gender-option">
+                        <input type="radio" id="female" name="gender" value="female">
+                        <label for="female">Perempuan</label>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-start">Mulai Tes Sekarang!</button>
+        </form>
+    </div>
+
+    <script>
+        // Animasi tombol saat hover
+        document.querySelector('.btn-start').addEventListener('mouseover', function() {
+            this.style.animation = 'none';
+            setTimeout(() => {
+                this.style.animation = 'pulse 2s infinite';
+            }, 10);
+        });
+        
+        // Handle form submission
+        document.getElementById('identityForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simpan data identitas
+            const userData = {
+                name: document.getElementById('name').value,
+                age: document.getElementById('age').value,
+                gender: document.querySelector('input[name="gender"]:checked').value
+            };
+            
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            // Redirect ke halaman tes
+            window.location.href = 'tes.html';
+        });
+    </script>
+</body>
+</html>
